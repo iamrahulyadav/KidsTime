@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.example.king.kidstime.DB.DbHelper;
 import com.example.king.kidstime.mvp.View.BaseActivity;
@@ -18,7 +19,9 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.btnToDoList)
-    Button btnToDoList;
+    ImageButton btnToDoList;
+    @BindView(R.id.btnTimeKeeping)
+    ImageButton btnTimeKeeping;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +36,16 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(view.getContext(), BaseActivity.class);
                 intent.putExtra("index", "ToDoList");
                 view.getContext().startActivity(intent);
-
             }
         });
 
-
+        btnTimeKeeping.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), BaseActivity.class);
+                intent.putExtra("index", "TabsTimeKeepingFragment");
+                view.getContext().startActivity(intent);
+            }
+        });
     }
 }

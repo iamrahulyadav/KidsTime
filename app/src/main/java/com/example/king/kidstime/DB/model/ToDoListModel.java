@@ -9,7 +9,9 @@ public class ToDoListModel {
     private String mText;
     private int mStatus;
 
-    private String time;
+    private String mDate;
+    private String time_start;
+    private String time_end;
     private String deviation;
 
     public ToDoListModel(int id, String text, int status){
@@ -17,11 +19,13 @@ public class ToDoListModel {
         this.mText = text;
         this.mStatus = status;
     }
-    public ToDoListModel(int id, String text, int status, String time, String deviation){
+    public ToDoListModel(int id, String text, int status, String date, String time_start, String time_end, String deviation){
         this.mId = id;
         this.mText = text;
         this.mStatus = status;
-        this.time = time;
+        this.mDate = date;
+        this.time_start = time_start;
+        this.time_end = time_end;
         this.deviation = deviation;
     }
 
@@ -49,19 +53,40 @@ public class ToDoListModel {
         this.mStatus = mStatus;
     }
 
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
     public String getDeviation() {
         return deviation;
     }
 
     public void setDeviation(String deviation) {
         this.deviation = deviation;
+    }
+
+    public String getTime_start() {
+        return time_start;
+    }
+
+    public void setTime_start(String time_start) {
+        this.time_start = time_start;
+    }
+
+    public String getTime_end() {
+        return time_end;
+    }
+
+    public void setTime_end(String time_end) {
+        this.time_end = time_end;
+    }
+
+    public String getmDate() {
+        return mDate;
+    }
+
+    public void setmDate(String mDate) {
+        this.mDate = mDate;
+    }
+
+    @Override
+    public String toString() {
+        return mText;
     }
 }

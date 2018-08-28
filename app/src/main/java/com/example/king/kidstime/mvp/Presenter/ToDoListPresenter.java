@@ -3,45 +3,41 @@ package com.example.king.kidstime.mvp.Presenter;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.os.Parcel;
 
 import com.example.king.kidstime.DB.DbHelper;
 import com.example.king.kidstime.mvp.Base.BasePresenter;
 import com.example.king.kidstime.mvp.View.ToDoList.ToDoListView;
+
+import java.io.Serializable;
 
 /**
  * Created by KING on 26.12.2017.
  */
 
 public class ToDoListPresenter extends BasePresenter<ToDoListView>{
-    DbHelper dbHelper;
-
+    public final String key = "ToDoList";
     public ToDoListPresenter(){
-
     }
-    public ToDoListPresenter(DbHelper dbHelper){
-        this.dbHelper = dbHelper;
-    }
-
 
     public void delete(int id){
-        dbHelper.deleteTask(id);
-        getView().update(dbHelper.getTaskList());
+        getDbHelper().deleteTask(id);
+        getView().update(getDbHelper().getList(key, 0));
+
     }
 
     public void insert(String task){
-        dbHelper.insertNewTask(task);
-        getView().update(dbHelper.getTaskList());
+        getDbHelper().insertNewTask(task);
+        getView().update(getDbHelper().getList(key, 0));
     }
 
     public void updateStatus(int id, int idStatus){
         ContentValues values = new ContentValues();
         values.put("Status", idStatus);
-        dbHelper.updateTask(id, values);
-        getView().update(dbHelper.getTaskList());
-        //dbHelper.
+
+        getDbHelper().updateTask(id, values);
+        getView().update(getDbHelper().getList(key, 0));
     }
-
-
 
     public void showDeleteDialog(int id){
         getView().deleteDialog(id);
@@ -50,5 +46,18 @@ public class ToDoListPresenter extends BasePresenter<ToDoListView>{
         getView().updateStatusDialog(id);
     }
 
+    public void getList(){
+        super.getList(key, 0);
+    }
 
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+    }
 }

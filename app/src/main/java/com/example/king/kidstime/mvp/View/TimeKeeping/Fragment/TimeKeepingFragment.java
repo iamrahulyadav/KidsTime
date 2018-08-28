@@ -1,9 +1,8 @@
-package com.example.king.kidstime.mvp.View.ToDoList;
+package com.example.king.kidstime.mvp.View.TimeKeeping.Fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,11 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import com.example.king.kidstime.DB.model.ToDoListModel;
 import com.example.king.kidstime.R;
-import com.example.king.kidstime.mvp.Presenter.ToDoListPresenter;
+import com.example.king.kidstime.mvp.Presenter.TimeKeepingPresenter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,25 +21,23 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+public class TimeKeepingFragment extends Fragment implements TimeKeepengView{
 
-public class ToDoListFragment extends Fragment implements ToDoListView{
-
-    @BindView(R.id.toDoList_recycler)
+    @BindView(R.id.timeKeepingList_recycler)
     RecyclerView recyclerView;
-    @BindView(R.id.addNewTask)
-    FloatingActionButton btnAddNewTask;
 
-    private ToDoListAdapter adapter;
+    private TimeKeepingAdapter adapter;
     private ArrayList<ToDoListModel> mList = null;
-    private static final ToDoListPresenter mToDoListPresenter = new ToDoListPresenter();
+    private static final TimeKeepingPresenter mTKPresenter = new TimeKeepingPresenter();
 
-    public ToDoListFragment() {
+    public TimeKeepingFragment() {
     }
 
-    public static ToDoListFragment newInstance() {
-        ToDoListFragment fragment = new ToDoListFragment();
+    public static TimeKeepingFragment newInstance(int day_id) {
+        TimeKeepingFragment fragment = new TimeKeepingFragment();
         Bundle args = new Bundle();
-        args.putSerializable("presenter", (Serializable) mToDoListPresenter);
+        args.putInt("day_id", day_id);
+        args.putSerializable("presenter", (Serializable) mTKPresenter);
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,51 +50,32 @@ public class ToDoListFragment extends Fragment implements ToDoListView{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_todolist, container, false);
+        View view = inflater.inflate(R.layout.fragment_item_list2, container, false);
         ButterKnife.bind(this, view);
 
-        mToDoListPresenter.attachView(this);
-        mToDoListPresenter.attachContext(getContext());
-        mToDoListPresenter.getList();
+        mTKPresenter.attachView(this);
+        mTKPresenter.attachContext(getContext());
+        mTKPresenter.setDay_id(getArguments().getInt("day_id"));
+        mTKPresenter.getList();
 
-        adapter = new ToDoListAdapter(mList, mToDoListPresenter);
+        adapter = new TimeKeepingAdapter(mList, mTKPresenter);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(),
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
 
-        btnAddNewTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addTask();
-            }
-        });
-
-
         return view;
     }
 
-    private void addTask(){
-        final EditText taskEditText = new EditText(getContext());
-        AlertDialog dialog = new AlertDialog.Builder(getContext())
-                .setTitle("Добавить новую задачу")
-                //.setMessage("Введите тект задачи") todo добавить что то информативное :)
-                .setView(taskEditText)
-                .setPositiveButton("Добавить", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        String task = String.valueOf(taskEditText.getText());
-                        mToDoListPresenter.insert(task);
-                    }
-                })
-                .setNegativeButton("Отменить", null)
-                .create();
-        dialog.show();
+    @Override
+    public void setList(ArrayList<ToDoListModel> list) {
+        mList = list;
     }
 
     @Override
     public void update(ArrayList<ToDoListModel> list) {
+        Log.d("Update", "update");
         adapter.addData(list);
     }
 
@@ -106,11 +83,10 @@ public class ToDoListFragment extends Fragment implements ToDoListView{
     public void deleteDialog(final int id) {
         AlertDialog dialog = new AlertDialog.Builder(getContext())
                 .setTitle("Вы хотите удалить запись?")
-                //.setMessage("Введите тект задачи") todo добавить что то информативное :)
                 .setPositiveButton("Да", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        mToDoListPresenter.delete(id);
+                        mTKPresenter.delete(id);
                     }
                 })
                 .setNegativeButton("Нет", null)
@@ -120,34 +96,29 @@ public class ToDoListFragment extends Fragment implements ToDoListView{
 
     @Override
     public void updateStatusDialog(final int id) {
-        Log.d("LOL_ID", String.valueOf(id));
         AlertDialog dialog = new AlertDialog.Builder(getContext())
                 .setTitle("Выполнил задачу?")
-                //.setMessage("Введите тект задачи") todo добавить что то информативное :)
                 .setPositiveButton("Да", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        mToDoListPresenter.updateStatus(id, 1);
+                        mTKPresenter.updateStatus(id, 1);
                     }
                 })
                 .setNegativeButton("Нет", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mToDoListPresenter.updateStatus(id, 0);
+                        mTKPresenter.updateStatus(id, 0);
                     }
                 })
                 .setNeutralButton("Не могу", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mToDoListPresenter.updateStatus(id, 2);
+                        mTKPresenter.updateStatus(id, 2);
                     }
                 })
                 .create();
         dialog.show();
     }
 
-    @Override
-    public void setList(ArrayList<ToDoListModel> list) {
-        mList = list;
-    }
+
 }

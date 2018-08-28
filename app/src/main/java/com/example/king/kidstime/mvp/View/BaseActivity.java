@@ -1,18 +1,15 @@
 package com.example.king.kidstime.mvp.View;
 
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 
 import com.example.king.kidstime.DB.DbHelper;
 import com.example.king.kidstime.R;
+import com.example.king.kidstime.mvp.View.TimeKeeping.Tabs.TabsTimeKeepingFragment;
 import com.example.king.kidstime.mvp.View.ToDoList.ToDoListFragment;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class BaseActivity extends AppCompatActivity {
@@ -31,10 +28,11 @@ public class BaseActivity extends AppCompatActivity {
 
         switch (index){
             case "ToDoList":{
-                fragment = ToDoListFragment.newInstance(dbHelper);
+                fragment = ToDoListFragment.newInstance();
                 break;
             }
-            case "TimeKeeping":{
+            case "TabsTimeKeepingFragment":{
+                fragment = TabsTimeKeepingFragment.newInstance();
                 break;
             }
         }

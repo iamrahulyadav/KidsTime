@@ -2,12 +2,13 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
+    android:id="@+id/main_panel"
+    android:background="@color/colorAccent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.king.kidstime.mvp.View.ToDoList.ToDoListFragment">
 
-    <include layout="@layout/fragment_item_list" />
+    <include layout="@layout/fragment_item_list"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/addNewTask"
@@ -15,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="25dp"
-        app:backgroundTint="@android:color/holo_red_dark"
-        app:srcCompat="@android:drawable/ic_menu_add" />
+        android:src="@mipmap/ic_plus"
+        app:backgroundTint="@color/btn_color"/>
 
 </android.support.design.widget.CoordinatorLayout>

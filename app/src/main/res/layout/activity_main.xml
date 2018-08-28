@@ -5,17 +5,31 @@
     android:layout_height="match_parent"
     tools:context="com.example.king.kidstime.MainActivity"
     android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center"
+    android:background="@color/colorAccent">
 
-    <Button
-        android:id="@+id/btnToDoList"
+    <GridLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Задачи"/>
-    <Button
-        android:id="@+id/btnTimeKeeping"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Хронометраж"/>
+        android:columnCount="2">
+
+        <ImageButton
+            android:id="@+id/btnToDoList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="20dp"
+            android:background="@color/btn"
+            android:src="@drawable/ic_2" />
+
+        <ImageButton
+            android:id="@+id/btnTimeKeeping"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="20dp"
+            android:background="@color/btn"
+            android:src="@drawable/ic_clock" />
+
+    </GridLayout>
+
 
 </LinearLayout>

@@ -1,7 +1,5 @@
-package com.example.king.kidstime.mvp.View.ToDoList;
+package com.example.king.kidstime.mvp.View.TimeKeeping.Fragment;
 
-import android.annotation.SuppressLint;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,21 +11,21 @@ import android.widget.TextView;
 
 import com.example.king.kidstime.DB.model.ToDoListModel;
 import com.example.king.kidstime.R;
-import com.example.king.kidstime.mvp.Presenter.ToDoListPresenter;
+import com.example.king.kidstime.mvp.Presenter.TimeKeepingPresenter;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHolder>{
+public class TimeKeepingAdapter extends RecyclerView.Adapter<TimeKeepingAdapter.ViewHolder> {
 
     private final ArrayList<ToDoListModel> mValues;
-    private ToDoListPresenter mToDoListPresenter;
+    private TimeKeepingPresenter mTimeKeepengPresenter;
 
-    public ToDoListAdapter(ArrayList<ToDoListModel> items, ToDoListPresenter presenter) {
+    public TimeKeepingAdapter(ArrayList<ToDoListModel> items, TimeKeepingPresenter presenter) {
         mValues = items;
-        mToDoListPresenter = presenter;
+        mTimeKeepengPresenter = presenter;
     }
 
     public void addData(ArrayList<ToDoListModel> data){
@@ -39,15 +37,16 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_item, parent, false);
+                .inflate(R.layout.fragment_item2, parent, false);
         return new ViewHolder(view);
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.mIdView.setText(String.valueOf(position+1));
-        holder.mContentView.setText(mValues.get(position).getmText());
+        //holder.mId.setText(String.valueOf(position+1));
+        holder.mId.setText(mValues.get(position).getTime_start() + " - " + mValues.get(position).getTime_end());
+        holder.mContent.setText(mValues.get(position).getmText());
+        //holder.mStatus.setText(mValues.get(position).getTime_start() + " - " + mValues.get(position).getTime_end());
 
         int status = mValues.get(position).getmStatus();
         switch (status){
@@ -72,6 +71,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
                 switch (event.getAction()){
 
                     case MotionEvent.ACTION_DOWN:{
+                        Log.d("StatusID", String.valueOf(mValues.get(position).getmStatus()));
                         startTime = System.currentTimeMillis();
                         break;
                     }
@@ -81,9 +81,9 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
                         long totalTime = System.currentTimeMillis()- startTime;
                         long totalSec = totalTime / 1000;
                         if(totalSec>=0.2){
-                            mToDoListPresenter.showDeleteDialog(mValues.get(position).getmId());
+                            mTimeKeepengPresenter.showDeleteDialog(mValues.get(position).getmId());
                         } else {
-                            mToDoListPresenter.showUpdateDialog(mValues.get(position).getmId());
+                            mTimeKeepengPresenter.showUpdateDialog(mValues.get(position).getmId());
                         }
 
                         break;
@@ -97,9 +97,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
                 return true;
             }
         });
-
     }
-
 
     @Override
     public int getItemCount() {
@@ -107,22 +105,20 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.id)
-        TextView mIdView;
-        @BindView(R.id.content)
-        TextView mContentView;
-        @BindView(R.id.status)
-        TextView mStatusView;
-        @BindView(R.id.content_panel)
+        @BindView(R.id.id_TK)
+        TextView mId;
+        @BindView(R.id.content_TK)
+        TextView mContent;
+        @BindView(R.id.status_TK)
+        TextView mStatus;
+        @BindView(R.id.content_panel_TK)
         LinearLayout content_panel;
-        @BindView(R.id.cardPanel)
-        CardView card_panel;
 
         private final View mView;
 
         private ViewHolder(View view) {
             super(view);
-            ButterKnife.bind(this, view);
+            ButterKnife.bind(this,view);
             mView = view;
         }
     }
